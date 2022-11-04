@@ -20,7 +20,10 @@ outlier_fraction = len(fraud)/float(len(valid))
 
 X = df.drop('Class',axis = 1) # X is input
 y = df['Class'] # y is output
+#no parmaters output X,y
 
+#----------------------------------------------------------------------------
+#params = X,y
 a = LocalOutlierFactor(n_neighbors = 20,contamination = outlier_fraction)
 y_prediction1 = a.fit_predict(X) # Fitting the model.
 y_prediction1[y_prediction1 == 1] = 0 # Valid transactions are labelled as 0.
@@ -29,7 +32,9 @@ errors1 = (y_prediction1 != y).sum() # Total number of errors is calculated.
 print(errors1)
 print(accuracy_score(y_prediction1,y))
 print(classification_report(y_prediction1,y))
-
+# returns errors1, accuracy_score(y_prediction1,y),classification_report(y_prediction1,y)
+#-----------------------------------------------------------------------------------
+#params = X,y
 b = IsolationForest(max_samples = len(X),contamination = outlier_fraction).fit(X) # Fitting the model.
 y_prediction2 = b.predict(X) # Prediction using trained model.
 y_prediction2[y_prediction2 == 1] = 0 # Valid transactions are labelled as 0.
@@ -38,3 +43,16 @@ errors2 = (y_prediction2 != y).sum() # Total number of errors is calculated.
 print(errors2)
 print(accuracy_score(y_prediction2,y))
 print(classification_report(y_prediction2,y))
+# returns errors1, accuracy_score(y_prediction2,y),classification_report(y_prediction2,y)
+#-------------------------------------------------------------------
+f = open("test.txt", "w")
+f.write("local outlier Factor" + "\n")
+f.write("errors: " + errors1 + "\n"))
+f.write("accuracy: " + accuracy_score(y_prediction1,y) + "\n")
+f.write(classification_report(y_prediction1,y) + "\n\n")
+f.write("Isolation Forest" + "\n")
+f.write("errors" + errors2 + "\n")
+f.write("accuracy: " + accuracy_score(y_prediction2,y) + "\n")
+f.write(classification_report(y_prediction2,y) + "\n")
+
+
